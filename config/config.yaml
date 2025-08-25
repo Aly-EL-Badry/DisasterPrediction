@@ -1,0 +1,29 @@
+  project:
+    root: "./"  
+    data_path: "Data/raw/seattle-weather.csv"
+
+  data_cleaning:
+    drop_columns:
+      - "date"
+
+  outlier_handling:
+    remove_columns:
+      - "wind"
+    cap_columns:
+      - "precipitation"
+
+  feature_engineering:
+    transformations:
+      - column: "precipitation"
+        method: "log1p"
+      - column: "wind"
+        method: "sqrt"
+
+  scaling:
+    columns_to_scale:
+      - "precipitation"
+      - "temp_max"
+      - "temp_min"
+      - "wind"
+      - "temp_avg"
+      - "temp_diff"
