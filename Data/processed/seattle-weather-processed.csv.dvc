@@ -1,5 +1,0 @@
-outs:
-- md5: 5980f00f1d9ce69ab6b838ee1b9ca3c8
-  size: 176261
-  hash: md5
-  path: seattle-weather-processed.csv
