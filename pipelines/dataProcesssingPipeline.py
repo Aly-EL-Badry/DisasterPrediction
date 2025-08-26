@@ -1,5 +1,5 @@
 from zenml import pipeline
-from steps.dataHandling import data_cleaning_step, outlier_handling_step, feature_engineering_step, scaling_step, split_step
+from steps.dataHandling import data_cleaning_step, outlier_handling_step, feature_engineering_step, scaling_step, save_to_csv_step
 from steps.dataIngestion import data_ingestion_step
 import yaml
 import os
@@ -9,6 +9,7 @@ with open("config/config.yaml", "r") as f:
 
 
 data_path = os.path.join(config['project']['root'], config['project']['data_path'])
+output_path = os.path.join(config['project']['root'], config['project']['output_path'] )
 drop_cols = config['data_cleaning']['drop_columns']
 remove_cols = config['outlier_handling']['remove_columns']
 cap_cols = config['outlier_handling']['cap_columns']
@@ -23,5 +24,5 @@ def data_preprocessing_pipeline():
     data = outlier_handling_step(data, remove_cols=remove_cols, cap_cols=cap_cols)
     data = feature_engineering_step(data, transformations=transformations)
     data = scaling_step(data, columns_to_scale=columns_to_scale)
-    split_data = split_step(data)
+    save_to_csv_step(data,output_path)
     

@@ -1,10 +1,10 @@
 import logging
 from typing import List
+from zenml import step
 import pandas as pd
-from typing import Dict, Any
 from sklearn.model_selection import train_test_split
 import numpy as np
-from zenml import step
+from sklearn.preprocessing import LabelEncoder
 
 from src.dataStrategies.cleaning import DropColumnsStrategy, DropDuplicatesStrategy
 from src.dataStrategies.outliers import cappingOutliersStrategy, removingOutliersStrategy
@@ -96,29 +96,6 @@ def scaling_step(data: pd.DataFrame, columns_to_scale: List[str]) -> pd.DataFram
         raise
 
 @step
-def split_step(
-    data: pd.DataFrame,
-    target: str = "weather",
-    test_size: float = 0.2,
-    random_state: int = 42
-) -> Dict[str, Any]:
-    """
-    Step to split dataset into train/test sets.
-    """
-    try:
-        logger.info(f"Splitting data with test_size={test_size}")
-        X = data.drop(columns=[target])
-        y = data[target]
-        X_train, X_test, y_train, y_test = train_test_split(
-            X, y, test_size=test_size, random_state=random_state
-        )
-        logger.info(f"Train shape: {X_train.shape}, Test shape: {X_test.shape}")
-        return {
-            "X_train": X_train,
-            "X_test": X_test,
-            "y_train": y_train,
-            "y_test": y_test
-        }
-    except Exception as e:
-        logger.error(f"Error in data splitting: {e}")
-        raise
+def save_to_csv_step(data: pd.DataFrame, path: str) -> None:
+    data.to_csv(path, index=False)
+    print(f"✅ Data saved to {path}")
