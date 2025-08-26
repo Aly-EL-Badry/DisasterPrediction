@@ -1,5 +1,6 @@
 import pandas as pd
 from zenml import step
+from sklearn.model_selection import train_test_split
 import logging
 
 logger = logging.getLogger(__name__)
