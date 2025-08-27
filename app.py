@@ -1,7 +1,7 @@
 # app.py
 from fastapi import FastAPI
 from pydantic import BaseModel
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any
 import pandas as pd
 from src.Deployment.modelService import ModelService
 from src.Deployment.FeedbackStore import save_feedback
@@ -19,6 +19,7 @@ from src.dataStrategies.Scalling import StandardScalerStrategy
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+app = FastAPI(title="ML Model API with Feedback", version="1.0")
 service = ModelService("Artifacts/ctb-model.pkl")
 
 class FeedbackRequest(BaseModel):
@@ -26,7 +27,6 @@ class FeedbackRequest(BaseModel):
     prediction: float
     actual: float
 
-app = FastAPI(title="ML Model API with Feedback", version="1.0")
 
 class PredictionRequest(BaseModel):
     features: List[Dict[str, Any]]
@@ -39,26 +39,22 @@ def preprocess_data(df: pd.DataFrame) -> pd.DataFrame:
     try:
         logger.info("Starting preprocessing pipeline...")
 
-        # Drop unnecessary columns
-        drop_cols = ["date"]  # Add other columns you dropped in training
+        drop_cols = ["date"]  
         df = DropColumnsStrategy(columns_to_drop=drop_cols).handle_data(df)
         df = DropDuplicatesStrategy().handle_data(df)
 
-        # Outlier handling (match training config)
-        remove_cols = []  # Add columns you removed outliers from
-        cap_cols = []     # Add columns you capped
+        remove_cols = [] 
+        cap_cols = []     
         for col in remove_cols:
             df = removingOutliersStrategy(col).handle_data(df)
         for col in cap_cols:
             df = cappingOutliersStrategy(col).handle_data(df)
 
-        # Feature Engineering
         if "temp_max" not in df.columns or "temp_min" not in df.columns:
             raise ValueError("Missing required columns: temp_max or temp_min")
         df["temp_diff"] = df["temp_max"] - df["temp_min"]
         df["temp_avg"] = (df["temp_max"] + df["temp_min"]) / 2
 
-        # Apply any transformations configured in training
         transformations = []  # Add your transformations here
         for transform in transformations:
             column = transform["column"]
@@ -66,7 +62,6 @@ def preprocess_data(df: pd.DataFrame) -> pd.DataFrame:
             func = getattr(np, method)
             df[column] = TransformationStrategy(func, column).handle_data(df)
 
-        # Scaling
         columns_to_scale = ["precipitation", "temp_max", "temp_min", "wind", "temp_diff", "temp_avg"]
         for col in columns_to_scale:
             df = StandardScalerStrategy(col).fit_transform(df)
@@ -85,16 +80,13 @@ def predict(request: PredictionRequest):
     try:
         df = pd.DataFrame(request.features)
 
-        # Validate required columns
         required_cols = ["date", "precipitation", "temp_max", "temp_min", "wind"]
         for col in required_cols:
             if col not in df.columns:
                 return {"error": f"Missing required column: {col}"}
 
-        # Preprocess input
         df = preprocess_data(df)
 
-        # Predict
         preds = service.predict(df)
         return {"predictions": preds.tolist()}
     except Exception as e:
