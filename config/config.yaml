@@ -2,6 +2,7 @@
     root: "./"  
     data_path: "Data/raw/seattle-weather.csv"
     output_path: "Data/processed/seattle-weather-processed.csv"
+    model_path: "Artifacts/"
 
   data_cleaning:
     drop_columns:

@@ -3,12 +3,32 @@ import logging
 
 class OutliersHandlingStrategy(DataStrategy):
     def __init__(self, column):
+        """
+        Initializes the OutliersHandlingStrategy with the given column to clean.
+
+        Args:
+            column (str): The column of the DataFrame to clean from outliers.
+        """
+
         super().__init__()
         self.columnToClean = column
         
 
 class removingOutliersStrategy(OutliersHandlingStrategy):
     def handle_data(self, data):
+        """
+        Handles outliers by removing data points outside of the IQR range.
+
+        Removes all data points that are outside of the range defined by the lower and upper bounds
+        calculated using the Interquartile Range (IQR).
+
+        Args:
+            data (pd.DataFrame): The DataFrame containing the column to clean.
+
+        Returns:
+            pd.DataFrame: The cleaned DataFrame with outliers removed.
+        """
+        
         try:
 
             logging.info("Handling outliers...")
@@ -25,11 +45,20 @@ class removingOutliersStrategy(OutliersHandlingStrategy):
             raise
 
 class cappingOutliersStrategy(OutliersHandlingStrategy):
-    """
-    A strategy to cap outliers in the dataset using the IQR method.
-    """
-
     def handle_data(self, data):
+        """
+        Handles outliers by capping data points outside of the IQR range.
+
+        Caps all data points that are outside of the range defined by the lower and upper bounds
+        calculated using the Interquartile Range (IQR).
+
+        Args:
+            data (pd.DataFrame): The DataFrame containing the column to clean.
+
+        Returns:
+            pd.DataFrame: The cleaned DataFrame with outliers capped.
+        """
+        
         try:
             logging.info("Handling outliers...")
 

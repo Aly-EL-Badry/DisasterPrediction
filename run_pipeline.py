@@ -1,4 +1,6 @@
 from pipelines.dataProcesssingPipeline import data_preprocessing_pipeline
+from pipelines.trainingPipeline import training_pipeline
 
 if __name__ == "__main__":
-    pipeline_instance = data_preprocessing_pipeline()
+    # data_preprocessing_pipeline()
+    training_pipeline()
