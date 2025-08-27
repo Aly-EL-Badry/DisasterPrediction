@@ -104,7 +104,6 @@ def trainingXGBoost(x_train : pd.DataFrame, x_test:pd.DataFrame, path : str) -> 
 
         mlflow.log_param("random_state", model.model.get_params()["random_state"])
         mlflow.xgboost.log_model(model.model, "models/xgboost")
-
         model.save(path=path)
         return model
     except Exception as e:
