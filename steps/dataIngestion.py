@@ -1,7 +1,8 @@
 import logging
 import pandas as pd
 from zenml import step
-from pathlib import Path
+import mlflow
+
 
 @step(enable_cache=False)
 def data_ingestion_step(DATA_PATH) -> pd.DataFrame:
@@ -14,6 +15,7 @@ def data_ingestion_step(DATA_PATH) -> pd.DataFrame:
     try:
         logging.info(f"Starting data ingestion from: {DATA_PATH}")
         data = pd.read_csv(DATA_PATH)
+        mlflow.log_artifact(DATA_PATH)
         logging.info(f"Data ingestion completed. Shape: {data.shape}")
         return data
     except FileNotFoundError:

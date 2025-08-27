@@ -1,0 +1,16 @@
+artifact_uri: file:///C:/Users/aibak/OneDrive/Desktop/My_code/AI%20Development/Disaster%20prediction/mlruns/434809993591371670/c2bd97204de74620a483ca1839185074/artifacts
+deleted_time: 1756314571066
+end_time: 1756312647053
+entry_point_name: ''
+experiment_id: '434809993591371670'
+lifecycle_stage: deleted
+run_id: c2bd97204de74620a483ca1839185074
+run_name: merciful-tern-327
+run_uuid: c2bd97204de74620a483ca1839185074
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756312608810
+status: 3
+tags: []
+user_id: aibak

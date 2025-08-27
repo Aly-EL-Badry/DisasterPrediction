@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1756315119130
+current_stage: None
+description: null
+last_updated_timestamp: 1756315119130
+name: CatboostModel
+run_id: 06b8273bc7104f3b9ee7f31241ca6ac4
+run_link: null
+source: file:///C:/Users/aibak/OneDrive/Desktop/My_code/AI%20Development/Disaster%20prediction/mlruns/497883408428762308/06b8273bc7104f3b9ee7f31241ca6ac4/artifacts/models/catboost
+status: READY
+status_message: null
+storage_location: file:///C:/Users/aibak/OneDrive/Desktop/My_code/AI%20Development/Disaster%20prediction/mlruns/497883408428762308/06b8273bc7104f3b9ee7f31241ca6ac4/artifacts/models/catboost
+user_id: null
+version: 1

@@ -1,0 +1,16 @@
+artifact_uri: file:///C:/Users/aibak/OneDrive/Desktop/My_code/AI%20Development/Disaster%20prediction/mlruns/434809993591371670/4607cf51b9c04facbe9cf54857e31063/artifacts
+deleted_time: 1756314562409
+end_time: 1756312190744
+entry_point_name: ''
+experiment_id: '434809993591371670'
+lifecycle_stage: deleted
+run_id: 4607cf51b9c04facbe9cf54857e31063
+run_name: inquisitive-gnat-375
+run_uuid: 4607cf51b9c04facbe9cf54857e31063
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756312183519
+status: 3
+tags: []
+user_id: aibak

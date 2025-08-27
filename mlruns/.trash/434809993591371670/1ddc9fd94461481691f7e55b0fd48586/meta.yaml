@@ -1,0 +1,16 @@
+artifact_uri: file:///C:/Users/aibak/OneDrive/Desktop/My_code/AI%20Development/Disaster%20prediction/mlruns/434809993591371670/1ddc9fd94461481691f7e55b0fd48586/artifacts
+deleted_time: 1756314562410
+end_time: 1756312315601
+entry_point_name: ''
+experiment_id: '434809993591371670'
+lifecycle_stage: deleted
+run_id: 1ddc9fd94461481691f7e55b0fd48586
+run_name: casual-donkey-251
+run_uuid: 1ddc9fd94461481691f7e55b0fd48586
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756312309008
+status: 3
+tags: []
+user_id: aibak

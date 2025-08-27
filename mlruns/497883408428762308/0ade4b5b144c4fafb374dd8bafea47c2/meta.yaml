@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/aibak/OneDrive/Desktop/My_code/AI%20Development/Disaster%20prediction/mlruns/497883408428762308/0ade4b5b144c4fafb374dd8bafea47c2/artifacts
+end_time: 1756315147657
+entry_point_name: ''
+experiment_id: '497883408428762308'
+lifecycle_stage: active
+run_id: 0ade4b5b144c4fafb374dd8bafea47c2
+run_name: System initialization
+run_uuid: 0ade4b5b144c4fafb374dd8bafea47c2
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756315100562
+status: 3
+tags: []
+user_id: aibak

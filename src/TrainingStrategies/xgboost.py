@@ -1,6 +1,5 @@
 from .base import Model
 from xgboost import XGBClassifier
-import numpy as np
 
 class XGBoostModel(Model):
     def __init__(self, **kwargs):
