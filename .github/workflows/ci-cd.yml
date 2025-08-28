@@ -26,7 +26,7 @@ jobs:
       - name: Run model evaluation
         id: model_eval
         run: |
-          python tests/test_models.py > metrics.txt
+          python tests/test_model.py > metrics.txt
           {
             echo "METRICS<<EOF"
             cat metrics.txt
