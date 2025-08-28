@@ -47,6 +47,11 @@ def split_step(
         X_train, X_test, y_train, y_test = train_test_split(
             X, y, test_size=test_size, random_state=random_state
         )
+        # save the data of the test in a test file 
+        test_data_path = os.path.join("data", "test", "test_data.csv")
+        os.makedirs(os.path.dirname(test_data_path), exist_ok=True)
+        pd.concat([X_test, y_test], axis=1).to_csv(test_data_path, index=False)
+        
         logger.info(f"Train shape: {X_train.shape}, Test shape: {X_test.shape}")
         return X_train, X_test, y_train, y_test
     except Exception as e:
