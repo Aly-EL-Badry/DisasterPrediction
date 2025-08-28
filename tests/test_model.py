@@ -45,8 +45,8 @@ def evaluate_model(model, X, y, model_name):
 
 def test_models():
     df = pd.read_csv(TEST_DATA_PATH)
-    X = df.drop("target", axis=1)
-    y = df["target"]
+    X = df.drop("weather", axis=1)
+    y = df["weather"]
 
     # Load models
     ctb_model = load_model(CTB_MODEL_PATH)
