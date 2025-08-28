@@ -6,9 +6,9 @@ from sklearn.metrics import classification_report, accuracy_score, confusion_mat
 import os
 
 # Paths
-CTB_MODEL_PATH = "./Artifacts/ctb-model.pkl"
-XG_MODEL_PATH = "./Artifacts/xgb-model.pkl"
-TEST_DATA_PATH = "./data/test/test_data.csv"
+CTB_MODEL_PATH = "Artifacts/ctb-model.pkl"
+XG_MODEL_PATH = "Artifacts/xgb-model.pkl"
+TEST_DATA_PATH = "data/test/test_data.csv"
 OUTPUT_DIR = "reports"
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
