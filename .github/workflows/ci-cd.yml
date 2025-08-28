@@ -27,15 +27,18 @@ jobs:
         id: model_eval
         run: |
           python tests/test_models.py > metrics.txt
-          echo "METRICS<<EOF" >> $GITHUB_ENV
-          cat metrics.txt >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          {
+            echo "METRICS<<EOF"
+            cat metrics.txt
+            echo "EOF"
+          } >> $GITHUB_ENV
 
       - name: Upload confusion matrix plots
         uses: actions/upload-artifact@v3
         with:
           name: confusion-matrix-plots
           path: reports/*.png
+        continue-on-error: true  # Prevents failure if no PNGs are found
 
       - name: Comment on PR with results
         if: github.event_name == 'pull_request'
