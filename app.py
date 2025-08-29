@@ -1,5 +1,6 @@
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Dict, Any
 import pandas as pd
@@ -21,6 +22,14 @@ logger.setLevel(logging.INFO)
 
 app = FastAPI(title="ML Model API with Feedback", version="1.0")
 service = ModelService("Artifacts/ctb-model.pkl")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class FeedbackRequest(BaseModel):
     features: Dict[str, Any]
