@@ -3,15 +3,6 @@ from sklearn.preprocessing import StandardScaler
 import logging
 
 class ScalingStrategy():
-    def __init__(self, column):
-        """
-        Initializes the ScalingStrategy with the given column to scale.
-
-        Args:
-            column (str): The column of the DataFrame to scale.
-        """
-        self.columnToScale = column
-    
     @abstractmethod
     def fit_transform(self, data):
         pass
@@ -21,16 +12,15 @@ class ScalingStrategy():
         pass
     
 class StandardScalerStrategy(ScalingStrategy):
-    def __init__(self, column):
+    def __init__(self):
         """
         Initializes the StandardScalerStrategy with the given column to scale.
 
         Args:
             column (str): The column of the DataFrame to scale.
         """
-        super().__init__(column)
         self.scaler = StandardScaler()
-        logging.info(f"StandardScaler initialized for column: {self.columnToScale}")
+        logging.info(f"StandardScaler initialized for data")
 
     def fit_transform(self, data):
         """
@@ -40,8 +30,8 @@ class StandardScalerStrategy(ScalingStrategy):
         """
         
         try:
-            data[self.columnToScale] = self.scaler.fit_transform(data[[self.columnToScale]])
-            logging.info(f"StandardScaler fit and transformed on column: {self.columnToScale}")
+            data = self.scaler.fit_transform(data)
+            logging.info(f"StandardScaler fit and transformed on column: {data}")
             return data
         except Exception as e:
             logging.error(f"Error in fit_transform: {e}")
@@ -58,8 +48,8 @@ class StandardScalerStrategy(ScalingStrategy):
             pd.DataFrame: The transformed DataFrame.
         """
         try:
-            data[self.columnToScale] = self.scaler.transform(data[[self.columnToScale]])
-            logging.info(f"StandardScaler transformed on column: {self.columnToScale}")
+            data = self.scaler.transform(data)
+            logging.info(f"StandardScaler transformed on column: {data}")
             return data
         except Exception as e:
             logging.error(f"Error in transform: {e}")

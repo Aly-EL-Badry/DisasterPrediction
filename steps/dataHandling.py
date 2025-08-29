@@ -2,7 +2,7 @@ import logging
 from typing import List
 from zenml import step
 import pandas as pd
-from sklearn.model_selection import train_test_split
+import pickle
 import numpy as np
 
 from src.dataStrategies.cleaning import DropColumnsStrategy, DropDuplicatesStrategy
@@ -86,8 +86,12 @@ def scaling_step(data: pd.DataFrame, columns_to_scale: List[str]) -> pd.DataFram
     """Step to scale specified columns."""
     try:
         logger.info(f"Starting scaling step for columns: {columns_to_scale}")
-        for col in columns_to_scale:
-            data = StandardScalerStrategy(col).fit_transform(data)
+        scaler = StandardScalerStrategy()
+        data[columns_to_scale] = scaler.fit_transform(data[columns_to_scale])
+
+        with open("Artifacts/scaler.pkl", "wb") as f:
+            pickle.dump(scaler, f)
+        
         logger.info("Scaling completed.")
         return data
     except Exception as e:

@@ -1,5 +1,6 @@
 
 from fastapi import FastAPI
+import pickle
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Dict, Any
@@ -11,14 +12,9 @@ from typing import List, Dict, Any
 import pandas as pd
 import numpy as np
 import logging
+    
 
-from src.dataStrategies.cleaning import DropColumnsStrategy, DropDuplicatesStrategy
-from src.dataStrategies.outliers import cappingOutliersStrategy, removingOutliersStrategy
-from src.dataStrategies.Transformation import TransformationStrategy
-from src.dataStrategies.Scalling import StandardScalerStrategy
-
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logging.basicConfig(level=logging.INFO)
 
 app = FastAPI(title="ML Model API with Feedback", version="1.0")
 service = ModelService("Artifacts/ctb-model.pkl")
@@ -46,39 +42,33 @@ class PredictionRequest(BaseModel):
 def preprocess_data(df: pd.DataFrame) -> pd.DataFrame:
     """Apply same preprocessing pipeline used in training."""
     try:
-        logger.info("Starting preprocessing pipeline...")
-
-        drop_cols = ["date"]  
-        df = DropColumnsStrategy(columns_to_drop=drop_cols).handle_data(df)
-        df = DropDuplicatesStrategy().handle_data(df)
-
-        remove_cols = [] 
-        cap_cols = []     
-        for col in remove_cols:
-            df = removingOutliersStrategy(col).handle_data(df)
-        for col in cap_cols:
-            df = cappingOutliersStrategy(col).handle_data(df)
+        logging.info("Starting preprocessing pipeline...")
+        logging.info(f"Original data shape: {df}")
+        df.drop(columns=["date"], inplace=True)
 
         if "temp_max" not in df.columns or "temp_min" not in df.columns:
             raise ValueError("Missing required columns: temp_max or temp_min")
+
         df["temp_diff"] = df["temp_max"] - df["temp_min"]
         df["temp_avg"] = (df["temp_max"] + df["temp_min"]) / 2
+        logging.info(f"Preprocessing data shape: {df}")
+        df["precipitation"] = np.log1p(df["precipitation"])
+        df["wind"] = np.sqrt(df["wind"])
+        logging.info(f"Preprocessing data shape: {df}")
+        columns_to_scale = ["precipitation","temp_max", "temp_min","wind","temp_avg", "temp_diff"]
+        
+        
+        with open("Artifacts/scaler.pkl", "rb") as f:
+            scaler = pickle.load(f)
 
-        transformations = []  # Add your transformations here
-        for transform in transformations:
-            column = transform["column"]
-            method = transform["method"]
-            func = getattr(np, method)
-            df[column] = TransformationStrategy(func, column).handle_data(df)
+        df[columns_to_scale] = scaler.transform(df[columns_to_scale])
+        
+        logging.info(f"Preprocessed data shape: {df}")
 
-        columns_to_scale = ["precipitation", "temp_max", "temp_min", "wind", "temp_diff", "temp_avg"]
-        for col in columns_to_scale:
-            df = StandardScalerStrategy(col).fit_transform(df)
-
-        logger.info("Preprocessing pipeline completed.")
+        logging.info("Preprocessing completed.")
         return df
     except Exception as e:
-        logger.error(f"Error in preprocessing: {e}")
+        logging.error(f"Error in preprocessing: {e}")
         raise
 
 # -------------------------------
@@ -99,7 +89,7 @@ def predict(request: PredictionRequest):
         preds = service.predict(df)
         return {"predictions": preds.tolist()}
     except Exception as e:
-        logger.error(f"Prediction error: {e}")
+        logging.error(f"Prediction error: {e}")
         return {"error": str(e)}
 
 
