@@ -6,39 +6,47 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
 jobs:
   test-models:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4  # Updated to v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v5  # Updated to v5
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
+          cache: "pip"
 
       - name: Install dependencies
         run: |
-          pip install -r requirements-action.txt
+          if [ -f requirements-action.txt ]; then
+            pip install -r requirements-action.txt
+          fi
           pip install scikit-learn pandas matplotlib seaborn
 
       - name: Run model evaluation
         id: model_eval
         run: |
+          mkdir -p reports
           python tests/test_model.py > metrics.txt
-          {
-            echo "METRICS<<EOF"
-            cat metrics.txt
-            echo "EOF"
-          } >> $GITHUB_ENV
+          echo "METRICS<<EOF" >> $GITHUB_ENV
+          cat metrics.txt >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: Upload confusion matrix plots
-        uses: actions/upload-artifact@v4  # Updated to v4
+        uses: actions/upload-artifact@v4
         with:
           name: confusion-matrix-plots
           path: reports/*.png
-        continue-on-error: true  # Prevents failure if no PNGs are found
+        continue-on-error: true
 
       - name: Comment on PR with results
         if: github.event_name == 'pull_request'
@@ -46,7 +54,12 @@ jobs:
         with:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
-            ### 🧪 Model Evaluation Results
+            ## 🧪 Model Evaluation Results
+            ✅ Tests executed successfully!  
+
+            **Metrics:**  
+            ```
             ${{ env.METRICS }}
-            
+            ```
+
             📊 Confusion matrix plots have been uploaded as workflow artifacts.
