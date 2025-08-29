@@ -9,7 +9,6 @@ from src.Deployment.modelService import ModelService
 from src.Deployment.FeedbackStore import save_feedback
 from pydantic import BaseModel
 from typing import List, Dict, Any
-import pandas as pd
 import numpy as np
 import logging
     
