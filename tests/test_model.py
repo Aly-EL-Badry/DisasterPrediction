@@ -2,6 +2,7 @@ import pickle
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import classification_report, accuracy_score, confusion_matrix
 import os
 
@@ -54,6 +55,8 @@ def test_models():
 
     # Evaluate both models
     acc_ctb = evaluate_model(ctb_model, X, y, "CatBoost_Model")
+    le = LabelEncoder()
+    y = le.fit_transform(y)
     acc_xg = evaluate_model(xg_model, X, y, "XGBoost_Model")
 
     # Basic assertion: accuracy > 0.5
