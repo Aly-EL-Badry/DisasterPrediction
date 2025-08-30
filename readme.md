@@ -63,6 +63,7 @@ Send a POST request to `/predict` endpoint with JSON body:
     }
   ]
 }
+```
 result: 
 ```json
 {
@@ -90,3 +91,4 @@ links :
 - DockerFile: https://hub.docker.com/r/alyelbadry/disaster-prediction-api
 - Full-Web App : https://aly-el-badry.github.io/DisasterPrediction/
 - Dagshub: https://dagshub.com/Aly-EL-Badry/DisasterPrediction
+
